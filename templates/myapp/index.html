@@ -1,5 +1,4 @@
-<!--changed in 8 exercise-->
-{% extends 'login/base.html' %}
+{% extends 'myapp/base.html' %}
 {% load staticfiles %}
 
 {% block title_block %}
@@ -13,8 +12,8 @@
 		</div>
 
 		<div>
-			<a href="{% url 'login:manager_login' %}">Manager Login</a> <br />
-			<a href="{% url 'login:administrator_login' %}">Administrator Login</a>
+			<a href="{% url 'myapp:manager_login' %}">Manager Login</a> <br />
+			<a href="{% url 'myapp:administrator_login' %}">Administrator Login</a>
 		</div>
 
 {% endblock %}
