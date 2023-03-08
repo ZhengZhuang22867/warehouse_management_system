@@ -1,0 +1,32 @@
+{% extends 'myapp/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Edit Administrators
+{% endblock %}
+
+{% block body_block %}
+    <form method="post" action="{% url 'myapp:edit_admin' %}">
+        {% csrf_token %}
+        <input type="hidden" name="admin_id" value="{{ administrator.admin_id }}" />
+        <table>
+            <tr>
+                <th>Name</th>
+                <td>
+                    <input name="admin_name" />
+                </td>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td>
+                    <input name="admin_pw" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="submit"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+{% endblock %}

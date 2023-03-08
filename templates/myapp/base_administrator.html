@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html>
+    <head lang="en">
+        <meta charset="UTF-8" />
+        <title>
+            Warehouse Management System -
+            {% block title_block %}
+                Default content.
+            {% endblock %}
+        </title>
+    </head>
+    <body>
+        <div>
+        {% block body_block %}
+        {% endblock %}
+        </div>
+        <!--sidebar-->
+        <div>
+            <ul>
+                <li><a href="{% url 'myapp:personal_information' %}">Personal Information</a></li>
+                <li><a href="{% url 'myapp:warehouse' %}">Warehouse Status</a></li>
+                <li><a href="{% url 'myapp:record' %}">Record List</a></li>
+            </ul>
+        </div>
+        <div>
+          <a href="{% url 'myapp:index' %}">Log out</a>
+        </div>
+    </body>
+</html>

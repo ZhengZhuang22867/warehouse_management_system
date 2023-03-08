@@ -1,10 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'myapp/base.html' %}
+{% load staticfiles %}
 
-</body>
-</html>
+{% block title_block %}
+	Administrator Information Page
+{% endblock %}
+
+{% block body_block %}
+	<a href="{% url 'myapp:add_admin'%}">Add administrators</a>
+	<table class="table">
+		<tr>
+		<th>Name</th>
+		<th>Age</th>
+		<th>Password</th>
+		<th>Email</th>
+		<th>Telephone</th>
+	</tr>
+	{% for admin in administrators %}
+		<tr>
+            <td align="center"> {{ admin.admin_name }} </td>
+			<td align="center"> {{ admin.admin_age }} </td>
+			<td align="center"> {{ admin.admin_pw }} </td>
+			<td align="center"> {{ admin.admin_email }} </td>
+			<td align="center"> {{ admin.admin_telephone }} </td>
+			<td align="center">
+				<!--这两个就是编辑和删除按钮-->
+				<a href="../edit_admin/?admin_id={{ admin.admin_id }}">edit</a>
+				<a href="../delete_admin/?admin_id={{ admin.admin_id }}">delete</a>
+			</td>
+		</tr>
+	{% endfor %}
+
+	</table>
+{% endblock %}
