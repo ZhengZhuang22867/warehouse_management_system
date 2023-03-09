@@ -8,16 +8,14 @@ from tkinter import *
 # 网站默认界面
 def index(request):
     context_dict = {}
-    context_dict['boldmessage'] = '网站默认界面，限制酒厂的信息和两种登陆方法的链接！'
-
+    context_dict['boldmessage'] = '网站默认界面，显示酒厂的信息和两种登陆方法的链接！'
     return render(request, 'myapp/index.html', context=context_dict)
 
-# 经理登陆
+# 经理登录
 def manager_login(request):
     if request.method == 'POST':
         manager_name = request.POST.get('manager_name')
         manager_password = request.POST.get('manager_password')
-
         if manager_name and manager_password:
             name = manager_name.strip()
             try:
@@ -29,12 +27,11 @@ def manager_login(request):
 
     return render(request, 'myapp/manager_login.html')
 
-# admin登陆
+# admin登录
 def administrator_login(request):
     if request.method == 'POST':
         administrator_name = request.POST.get('administrator_name')
         administrator_password = request.POST.get('administrator_password')
-
         if administrator_name and administrator_password:
             name = administrator_name.strip()
             try:
@@ -42,7 +39,8 @@ def administrator_login(request):
             except:
                 return render(request, 'myapp/index.html')
             if administrator.admin_pw == administrator_password:
-                return redirect('myapp:administrator_home')
+                request.session['admin_id'] = administrator.admin_id
+                return render(request, 'myapp/administrator_home.html')
 
     return render(request, 'myapp/administrator_login.html')
 
@@ -69,7 +67,7 @@ def add_admin(request):
             cursor.execute("INSERT INTO administrator (admin_name,admin_pw,manager_name)"
                            "values (%s,%s,%s)", [admin_name,admin_pw,manager_name])
             conn.commit()
-    return redirect('../')
+    return render(request, 'myapp/manager_login.html')
 
 # 修改admin账户
 def edit_admin(request):
@@ -91,7 +89,7 @@ def edit_admin(request):
             cursor.execute("UPDATE administrator SET admin_name=%s,admin_pw=%s where admin_id =%s",
                            [admin_name, admin_pw, admin_id])
             conn.commit()
-        return redirect('../')
+        return render(request, 'myapp/manager_login.html')
 
 def delete_admin(request):
     admin_id = request.GET.get('admin_id')
@@ -99,14 +97,45 @@ def delete_admin(request):
     with conn.cursor(cursor=pymysql.cursors.DictCursor) as cursor:
         cursor.execute("DELETE FROM administrator WHERE admin_id=%s",[admin_id])
         conn.commit()
-    return redirect('../')
+    return render(request, 'myapp/manager_login.html')
 
 # admin主界面
 def administrator_home(request):
     return render(request, 'myapp/administrator_home.html')
 
-def personal_information(request):
-    return render(request, 'myapp/personal_information.html')
+def profile_information(request):
+    admin_id = request.session.get('admin_id')
+    context_dict = {}
+    conn = pymysql.connect(host="localhost", user="root", passwd="12345678", db="drinks", charset='utf8')
+    with conn.cursor(cursor=pymysql.cursors.DictCursor) as cursor:
+        cursor.execute("SELECT admin_id,admin_name,admin_pw,admin_age,admin_email,admin_telephone FROM administrator where admin_id =%s", [admin_id])
+        admin = cursor.fetchone()
+    context_dict['administrator'] = admin
+    return render(request, 'myapp/profile_information.html', context_dict)
+
+def edit_profile(request):
+    if request.method == 'GET':
+        admin_id = request.GET.get('admin_id')
+        context_dict = {}
+        conn = pymysql.connect(host="localhost", user="root", passwd="12345678", db="drinks", charset='utf8')
+        with conn.cursor(cursor=pymysql.cursors.DictCursor) as cursor:
+            cursor.execute("SELECT admin_id,admin_name,admin_pw,admin_age, admin_email, admin_telephone FROM administrator where admin_id =%s", [admin_id])
+            admin = cursor.fetchone()
+        context_dict['administrator'] = admin
+        return render(request, 'myapp/edit_profile.html', context_dict)
+    else:
+        admin_id = request.POST.get('admin_id')
+        admin_name = request.POST.get("admin_name")
+        admin_pw = request.POST.get('admin_pw', '')
+        admin_age = request.POST.get('admin_age')
+        admin_email = request.POST.get('admin_email')
+        admin_telephone = request.POST.get('admin_telephone')
+        conn = pymysql.connect(host="localhost", user="root", passwd="12345678", db="drinks", charset='utf8')
+        with conn.cursor(cursor=pymysql.cursors.DictCursor) as cursor:
+            cursor.execute("UPDATE administrator SET admin_name=%s,admin_pw=%s,admin_age=%s,admin_email=%s,admin_telephone=%s where admin_id =%s",
+                           [admin_name, admin_pw, admin_age, admin_email, admin_telephone, admin_id])
+            conn.commit()
+        return render(request, 'myapp/administrator_login.html')
 
 def warehouse(request):
     return render(request, 'myapp/warehouse.html')

@@ -16,14 +16,6 @@
         {% block body_block %}
         {% endblock %}
         </div>
-        <!--sidebar-->
-        <div>
-            <ul>
-                <li><a href="{% url 'myapp:profile_information' %}">Profile</a></li>
-                <li><a href="{% url 'myapp:warehouse' %}">Warehouse Status</a></li>
-                <li><a href="{% url 'myapp:record' %}">Record List</a></li>
-            </ul>
-        </div>
         <div>
           <a href="{% url 'myapp:index' %}">Log out</a>
         </div>

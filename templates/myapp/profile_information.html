@@ -1,0 +1,21 @@
+{% extends 'myapp/base_administrator.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Profile Information
+{% endblock %}
+
+{% block body_block %}
+
+	<h1>{{ administrator.admin_name }}</h1>
+
+	<div>
+		<p>这里应该显示admin的头像！<p/>
+		<p>Admin Age: {{ administrator.admin_age }}</p>
+		<p>Admin Email: {{ administrator.admin_email }}</p>
+		<p>Admin Telephone: {{ administrator.admin_telephone }}</p>
+	</div>
+
+	<a href="../edit_profile/?admin_id={{ administrator.admin_id }}">edit</a>
+
+{% endblock %}

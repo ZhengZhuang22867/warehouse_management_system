@@ -1,4 +1,4 @@
-{% extends 'myapp/base.html' %}
+{% extends 'myapp/base_manager.html' %}
 {% load staticfiles %}
 
 {% block title_block %}
@@ -11,13 +11,13 @@
         <input type="hidden" name="admin_id" value="{{ administrator.admin_id }}" />
         <table>
             <tr>
-                <th>Name</th>
+                <th>Name:</th>
                 <td>
                     <input name="admin_name" />
                 </td>
             </tr>
             <tr>
-                <th>Password</th>
+                <th>Password:</th>
                 <td>
                     <input name="admin_pw" />
                 </td>

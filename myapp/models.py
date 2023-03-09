@@ -64,3 +64,11 @@ class Warehouse(models.Model):
         managed = True
         db_table = 'warehouse'
 
+class AdminProfile(models.Model):
+    admin = models.OneToOneField(Administrator, on_delete=models.CASCADE)
+    picture = models.ImageField(upload_to='profile_images', default='default.jpg', blank=True)
+
+    def __str__(self):
+        return self.admin.admin_name
+
+

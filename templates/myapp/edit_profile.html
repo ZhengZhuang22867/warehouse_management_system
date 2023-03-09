@@ -1,0 +1,59 @@
+{% extends 'myapp/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Edit Profile
+{% endblock %}
+
+{% block body_block %}
+
+	<form method="post" action="{% url 'myapp:edit_profile' %}">
+        {% csrf_token %}
+        <input type="hidden" name="admin_id" value="{{ administrator.admin_id }}" />
+        <table>
+            <tr>
+                <th>Admin Name:</th>
+                <td>
+                    <input name="admin_name" />
+                </td>
+            </tr>
+            <tr>
+                <th>Admin Password:</th>
+                <td>
+                    <input name="admin_pw" />
+                </td>
+            </tr>
+			<tr>
+                <th>Admin Age:</th>
+                <td>
+                    <input name="admin_age" />
+                </td>
+            </tr>
+			<tr>
+                <th>Admin Email:</th>
+                <td>
+                    <input name="admin_email" />
+                </td>
+            </tr>
+			<tr>
+                <th>Admin Telephone:</th>
+                <td>
+                    <input name="admin_telephone" />
+                </td>
+            </tr>
+<!--            这里应该可以修改头像！-->
+<!--            <tr>-->
+<!--                <th>Change your avatar:</th>-->
+<!--                <td>-->
+<!--                    <input name="picture" type="file" />-->
+<!--                </td>-->
+<!--            </tr>-->
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="submit"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+{% endblock %}
