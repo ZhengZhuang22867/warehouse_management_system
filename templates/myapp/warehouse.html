@@ -6,5 +6,28 @@
 {% endblock %}
 
 {% block body_block %}
+	<h1>Warehouse ID: {{ warehouse_id }}</h1>
 
+	<table class="table">
+		<tr>
+			<th>Product_id</th>
+			<th>Name</th>
+			<th>Type</th>
+			<th>Number</th>
+		</tr>
+		{% for product in products %}
+		<tr>
+            <td align="center"> {{ product.product_id }} </td>
+			<td align="center"> {{ product.name }} </td>
+			<td align="center"> {{ product.type }} </td>
+			<td align="center"> {{ product.number }} </td>
+			<td align="center">
+				<!--这个就是查看按钮-->
+				<a href="../check_product/?product_id={{ product.product_id }}">check</a>
+			</td>
+		</tr>
+		{% endfor %}
+	</table>
+
+	<a href="{% url 'myapp:add_product' %}">Add products</a>
 {% endblock %}

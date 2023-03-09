@@ -1,0 +1,36 @@
+{% extends 'myapp/base_administrator.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Check product
+{% endblock %}
+
+{% block body_block %}
+
+	<table class="table">
+		<p>这里应该放product的图片！</p>
+
+		<tr>
+			<th>Product_id</th>
+			<th>Name</th>
+			<th>Type</th>
+			<th>Purchase_price</th>
+			<th>Selling_price</th>
+			<th>Number</th>
+			<th>Supplier</th>
+		</tr>
+		<tr>
+            <td align="center"> {{ product.product_id }} </td>
+			<td align="center"> {{ product.name }} </td>
+			<td align="center"> {{ product.type }} </td>
+			<td align="center"> {{ product.purchase_price }} </td>
+			<td align="center"> {{ product.selling_price }} </td>
+			<td align="center"> {{ product.number }} </td>
+			<td align="center"> {{ product.supplier }} </td>
+<!--			<td align="center">-->
+<!--				&lt;!&ndash;这三个是增加、减少和删除按钮&ndash;&gt;-->
+<!--				<a href="../edit_admin/?admin_id={{ admin.admin_id }}">check</a>-->
+<!--			</td>-->
+		</tr>
+	</table>
+{% endblock %}

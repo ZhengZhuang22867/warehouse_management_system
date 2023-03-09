@@ -1,0 +1,61 @@
+{% extends 'myapp/base_administrator.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Add Products
+{% endblock %}
+
+{% block body_block %}
+<form method="post" action="{% url 'myapp:add_product' %}">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <th>Warehouse_ID</th>
+                <td>
+                    <input name="warehouse_id">
+                </td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>
+                    <input name="name" />
+                </td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>
+                    <input name="type" />
+                </td>
+            </tr>
+			<tr>
+                <th>Purchase_price</th>
+                <td>
+                    <input name="purchase_price" />
+                </td>
+            </tr>
+			<tr>
+                <th>Selling_price</th>
+                <td>
+                    <input name="selling_price" />
+                </td>
+            </tr>
+			<tr>
+                <th>Number</th>
+                <td>
+                    <input name="number" />
+                </td>
+            </tr>
+			<tr>
+                <th>Supplier</th>
+                <td>
+                    <input name="supplier" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="submit"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+{% endblock %}

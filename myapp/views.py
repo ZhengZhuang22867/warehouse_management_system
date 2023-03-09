@@ -138,7 +138,68 @@ def edit_profile(request):
         return render(request, 'myapp/administrator_login.html')
 
 def warehouse(request):
-    return render(request, 'myapp/warehouse.html')
+    admin_id = request.session.get('admin_id')
+    warehouse = models.Warehouse.objects.get(admin_id=admin_id)
+    warehouse_id = warehouse.warehouse_id
+    context_dict = {}
+    conn = pymysql.connect(host='localhost', user='root', password='12345678', db='drinks', charset='utf8')
+    with conn.cursor(cursor=pymysql.cursors.DictCursor) as cursor:
+        cursor.execute('SELECT product_id,name,type,number FROM product WHERE warehouse_id=%s',
+                       [warehouse_id])
+        products = cursor.fetchall()
+    context_dict['products'] = products
+    context_dict['warehouse_id'] = warehouse_id
+    return render(request, 'myapp/warehouse.html', context_dict)
+
+def check_product(request):
+    product_id = request.GET.get('product_id')
+    context_dict = {}
+    conn = pymysql.connect(host="localhost", user="root", passwd="12345678", db="drinks", charset='utf8')
+    with conn.cursor(cursor=pymysql.cursors.DictCursor) as cursor:
+        cursor.execute(
+            'SELECT product_id,name,type,purchase_price,selling_price,number,supplier FROM product WHERE product_id=%s',
+                       [product_id]
+        )
+        product = cursor.fetchone()
+    context_dict['product'] = product
+    return render(request, 'myapp/check_product.html',context_dict)
+
+def add_product(request):
+    if request.method == 'GET':
+        return render(request, 'myapp/add_product.html')
+    else:
+        warehouse_id = request.POST.get('warehouse_id', '')
+        name = request.POST.get('name','')
+        type = request.POST.get('type','')
+        purchase_price = request.POST.get('purchase_price', '')
+        selling_price = request.POST.get('selling_price', '')
+        number = request.POST.get('number', '')
+        supplier = request.POST.get('supplier', '')
+        conn = pymysql.connect(host="localhost", user="root", passwd="12345678", db="drinks", charset='utf8')
+        with conn.cursor(cursor=pymysql.cursors.DictCursor) as cursor:
+            cursor.execute(
+                "INSERT INTO product (warehouse_id,name,type,purchase_price,selling_price,number,supplier)"
+                           "values (%s,%s,%s,%s,%s,%s,%s)", [warehouse_id,name,type,purchase_price,selling_price,number,supplier])
+            conn.commit()
+        product_new = models.Product.objects.get(name = name, type = type, warehouse_id=warehouse_id, number = number)
+        product_id = product_new.product_id
+        with conn.cursor(cursor=pymysql.cursors.DictCursor) as cursor:
+            cursor.execute(
+                "INSERT INTO record (product_id,warehouse_id,number) values (%s,%s,%s)",
+                [product_id,warehouse_id,number])
+            conn.commit()
+    return render(request, 'myapp/administrator_login.html')
 
 def record(request):
-    return render(request, 'myapp/record.html')
+    admin_id = request.session.get('admin_id')
+    warehouse = models.Warehouse.objects.get(admin_id=admin_id)
+    warehouse_id = warehouse.warehouse_id
+    context_dict = {}
+    conn = pymysql.connect(host='localhost', user='root', password='12345678', db='drinks', charset='utf8')
+    with conn.cursor(cursor=pymysql.cursors.DictCursor) as cursor:
+        cursor.execute('SELECT product_id,warehouse_id,number FROM record WHERE warehouse_id=%s',
+                       [warehouse_id])
+        records = cursor.fetchall()
+    context_dict['records'] = records
+    context_dict['warehouse_id'] = warehouse_id
+    return render(request, 'myapp/record.html', context_dict)

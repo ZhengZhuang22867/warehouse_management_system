@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block body_block %}
-	<a href="{% url 'myapp:add_admin'%}">Add administrators</a>
+
 	<table class="table">
 		<tr>
 		<th>Name</th>
@@ -29,6 +29,7 @@
 			</td>
 		</tr>
 	{% endfor %}
-
 	</table>
+
+	<a href="{% url 'myapp:add_admin'%}">Add administrators</a>
 {% endblock %}

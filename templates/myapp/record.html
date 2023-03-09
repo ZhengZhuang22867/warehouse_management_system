@@ -6,5 +6,21 @@
 {% endblock %}
 
 {% block body_block %}
+	<h1>Records for Warehouse {{ warehouse_id }}</h1>
+
+	<table class="table">
+		<tr>
+			<th>Product_id</th>
+			<th>Warehouse_id</th>
+			<th>Number</th>
+		</tr>
+		{% for record in records %}
+		<tr>
+			<td align="center"> {{ record.product_id }} </td>
+			<td align="center"> {{ record.warehouse_id }} </td>
+			<td align="center"> {{ record.number }} </td>
+		</tr>
+		{% endfor %}
+	</table>
 
 {% endblock %}
