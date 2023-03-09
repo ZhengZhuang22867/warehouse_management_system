@@ -190,6 +190,45 @@ def add_product(request):
             conn.commit()
     return render(request, 'myapp/administrator_login.html')
 
+def edit_product(request):
+        if request.method == 'GET':
+            product_id = request.GET.get('product_id')
+            global number_old
+            global warehouse_id_temp
+            product = models.Product.objects.get(product_id = product_id)
+            number_old = int(product.number)
+            warehouse_id_temp = product.warehouse_id
+            context_dict = {}
+            conn = pymysql.connect(host="localhost", user="root", passwd="12345678", db="drinks", charset='utf8')
+            with conn.cursor(cursor=pymysql.cursors.DictCursor) as cursor:
+                cursor.execute("SELECT product_id,warehouse_id,name,type,purchase_price,"
+                               "selling_price,number,supplier FROM product where product_id =%s", [product_id])
+                product = cursor.fetchone()
+            context_dict['product'] = product
+            return render(request, 'myapp/edit_product.html', context_dict)
+        else:
+            product_id = request.POST.get('product_id')
+            name = request.POST.get('name','')
+            type = request.POST.get("type",'')
+            purchase_price = request.POST.get('purchase_price', '')
+            selling_price = request.POST.get('selling_price','')
+            number = request.POST.get('number','')
+            supplier = request.POST.get('supplier','')
+            conn = pymysql.connect(host="localhost", user="root", passwd="12345678", db="drinks", charset='utf8')
+            with conn.cursor(cursor=pymysql.cursors.DictCursor) as cursor:
+                cursor.execute("UPDATE product SET name=%s,type=%s,purchase_price=%s,"
+                               "selling_price=%s,number=%s,supplier=%s where product_id =%s",
+                               [name, type, purchase_price, selling_price, number, supplier,product_id])
+                conn.commit()
+            number_new = int(number) - number_old
+            number_new = str(number_new)
+            with conn.cursor(cursor=pymysql.cursors.DictCursor) as cursor:
+                cursor.execute(
+                    "INSERT INTO record (product_id,warehouse_id,number) values (%s,%s,%s)",
+                    [product_id, warehouse_id_temp, number_new])
+                conn.commit()
+            return render(request, 'myapp/administrator_login.html')
+
 def record(request):
     admin_id = request.session.get('admin_id')
     warehouse = models.Warehouse.objects.get(admin_id=admin_id)

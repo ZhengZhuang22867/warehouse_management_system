@@ -27,10 +27,10 @@
 			<td align="center"> {{ product.selling_price }} </td>
 			<td align="center"> {{ product.number }} </td>
 			<td align="center"> {{ product.supplier }} </td>
-<!--			<td align="center">-->
-<!--				&lt;!&ndash;这三个是增加、减少和删除按钮&ndash;&gt;-->
-<!--				<a href="../edit_admin/?admin_id={{ admin.admin_id }}">check</a>-->
-<!--			</td>-->
+			<td align="center">
+				<!--这个是modify按钮-->
+				<a href="../edit_product/?product_id={{ product.product_id }}">modify</a>
+			</td>
 		</tr>
 	</table>
 {% endblock %}
